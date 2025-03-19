@@ -1,0 +1,15 @@
+@import './base.css';
+@import 'tailwindcss';
+
+#app {
+  margin: 0 auto;
+  font-weight: normal;
+}
+
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
