@@ -37,22 +37,22 @@ const stop = () => {
     metronome.value.stop()
 }
 
-const handleTempoInputChange = ($event) => {
-    handleTempoChange(parseInt($event.currentTarget.value))
+const handleTempoInputChange = ($event: Event) => {
+    handleTempoChange(parseInt(($event.target as HTMLInputElement).value))
 }
 
-const handleTempoChange = (value,) => {
+const handleTempoChange = (value: number) => {
     metronome.value.setTemp(value)
     tempo.value = value;
     stop()
 }
 
-const handleMasterVolumeChange = ($event) => {
-    masterVolume.value = Number($event.target.value)
+const handleMasterVolumeChange = ($event: Event) => {
+    masterVolume.value = Number(($event.target as HTMLInputElement).value)
     metronome.value.setMasterVolume(masterVolume.value / 100)
 }
 
-const handleNoteResolutionSelect = (value) => {
+const handleNoteResolutionSelect = (value: number) => {
     noteResolution.value = value
     metronome.value.setNoteResolution(value);
     stop()
@@ -65,7 +65,7 @@ onMounted(() => {
 })
 
 watch(() => metronome.value.beatStyles, (value) => {
-    const fillStyleClassMap = {
+    const fillStyleClassMap: { [key: string]: string } = {
         red: 'bg-amber-300',
         blue: 'bg-amber-100',
         black: 'bg-neutral-100',

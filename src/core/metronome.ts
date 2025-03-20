@@ -3,13 +3,13 @@ const SCHEDULE_AHEAD_TIME = 0.1 // How far ahead to schedule audio (sec)
 const LOOK_AHEAD = 25.0 // How frequently to call scheduling function (in milliseconds)
 
 export class MetronomeController {
-  timerWorker
+  timerWorker!: Worker
   audioContext = new window.AudioContext()
   volume = this.audioContext.createGain()
 
-  current16thNote // What note is currently last scheduled?
+  current16thNote = 0 // What note is currently last scheduled?
   tempo = 90.0 // tempo (in beats per minute)
-  notesInQueue = [] // the notes that have been put into the web audio,
+  notesInQueue: Array<{ note: number; time: number }> = [] // the notes that have been put into the web audio,
   nextNoteTime = 0.0 // when the next note is due.
   last16thNoteDrawn = -1 // the last "box" we drew on the screen
   noteResolution = 2 // 0 == 16th, 1 == 8th, 2 == quarter note
@@ -17,7 +17,7 @@ export class MetronomeController {
   // with next interval (in case the timer is late)
   isPlaying = false // Are we currently playing?
   unlocked = false
-  beatStyles = []
+  beatStyles: Array<string> = []
 
   constructor() {}
 
@@ -25,22 +25,21 @@ export class MetronomeController {
     return this.audioContext
   }
 
-  setTemp(tempo) {
+  setTemp(tempo: number) {
     this.tempo = tempo
   }
 
-  setMasterVolume(value) {
-    console.log(value)
+  setMasterVolume(value: number) {
     this.volume.gain.setValueAtTime(value, this.audioContext.currentTime)
   }
 
-  setNoteResolution(noteResolution) {
+  setNoteResolution(noteResolution: number) {
     this.noteResolution = noteResolution
   }
 
-  initTimerWorker(srciptURL) {
+  initTimerWorker(srciptURL: URL) {
     this.timerWorker = new Worker(srciptURL)
-    this.timerWorker.onmessage = (e) => {
+    this.timerWorker.onmessage = (e: MessageEvent) => {
       if (e.data == 'tick') {
         this.scheduler()
       } else {
@@ -59,8 +58,8 @@ export class MetronomeController {
     if (this.audioContext) {
       const currentTime = this.audioContext.currentTime
 
-      while (this.notesInQueue.length && this.notesInQueue[0].time < currentTime) {
-        currentNote = this.notesInQueue[0].note
+      while (this.notesInQueue.length && this.notesInQueue[0]?.time < currentTime) {
+        currentNote = this.notesInQueue[0]?.note
         this.notesInQueue.splice(0, 1) // remove note from queue
       }
 
@@ -127,7 +126,7 @@ export class MetronomeController {
     }
   }
 
-  scheduleNote(beatNumber, time) {
+  scheduleNote(beatNumber: number, time: number) {
     // push the note on the queue, even if we're not playing.
     this.notesInQueue.push({ note: beatNumber, time: time })
 
