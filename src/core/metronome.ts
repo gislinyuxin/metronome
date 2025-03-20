@@ -38,7 +38,7 @@ export class MetronomeController {
   }
 
   initTimerWorker(srciptURL: URL) {
-    this.timerWorker = new Worker(srciptURL)
+    this.timerWorker = new Worker(srciptURL, { type: 'module' })
     this.timerWorker.onmessage = (e: MessageEvent) => {
       if (e.data == 'tick') {
         this.scheduler()
