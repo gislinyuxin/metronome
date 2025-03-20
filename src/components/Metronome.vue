@@ -59,7 +59,7 @@ const handleNoteResolutionSelect = (value: number) => {
 }
 
 onMounted(() => {
-    metronome.value.initTimerWorker(new URL("@/core/metronome.worker.ts", import.meta.url))
+    metronome.value.initTimerWorker(new URL("@/core/metronome.worker.js", import.meta.url))
     metronome.value.setTemp(tempo.value)
     metronome.value.setNoteResolution(noteResolution.value)
 })

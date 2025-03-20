@@ -1,4 +1,4 @@
-let timerID: number
+let timerID
 let interval = 100
 
 self.onmessage = function (e) {
@@ -23,5 +23,3 @@ self.onmessage = function (e) {
     timerID = 0
   }
 }
-
-postMessage('hi there')
