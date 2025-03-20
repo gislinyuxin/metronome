@@ -4,7 +4,7 @@ let interval = 100
 self.onmessage = function (e) {
   if (e.data == 'start') {
     console.log('starting')
-    timerID = window.setInterval(function () {
+    timerID = self.setInterval(function () {
       postMessage('tick')
     }, interval)
   } else if (e.data.interval) {
@@ -13,7 +13,7 @@ self.onmessage = function (e) {
     console.log('interval=' + interval)
     if (timerID) {
       clearInterval(timerID)
-      timerID = window.setInterval(function () {
+      timerID = self.setInterval(function () {
         postMessage('tick')
       }, interval)
     }
